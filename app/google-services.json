@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "616966087118",
+    "project_id": "words-starting-with-letter",
+    "storage_bucket": "words-starting-with-letter.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:616966087118:android:fa488082cb2b00a4ac0b9f",
+        "android_client_info": {
+          "package_name": "ru.stacymay.wordsstartingwithlettergame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "616966087118-bg9igj3q5minausssfgf2d53gd6uo13i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZJjkEzevnkQtQneMUbVIlOkJ6IIjE0Gw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "616966087118-bg9igj3q5minausssfgf2d53gd6uo13i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

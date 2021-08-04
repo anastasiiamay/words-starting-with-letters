@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">На букву</string>
+    <string name="facebook_app_id">252085333077148</string>
+    <string name="fb_login_protocol_scheme">fb252085333077148</string>
+    <string name="firebase_db_path">https://words-starting-with-letter-default-rtdb.europe-west1.firebasedatabase.app/</string>
+
+</resources>

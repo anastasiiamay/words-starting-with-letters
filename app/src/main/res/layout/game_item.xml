@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/custom_google_button"
+    android:padding="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userPhoto"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/com_facebook_profile_picture_blank_square" />
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/userPhoto"
+        android:textSize="18sp"
+        android:layout_centerVertical="true"
+        android:singleLine="false"
+        android:textColor="@color/black"
+        android:text="Имя приглашает Вас на игру"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginTop="7dp"
+        android:drawableTint="@color/green"
+        android:drawablePadding="5dp"
+        />
+
+    <android.widget.Button
+        android:id="@+id/play"
+        android:layout_width="match_parent"
+        android:focusable="false"
+        android:padding="3dp"
+        android:layout_height="55dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:text=""
+        android:textAlignment="textEnd"
+        android:fontFamily="@font/fontawesome"
+        app:fontFamily="@font/fontawesome"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        android:paddingEnd="10dp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:background="@color/transparent"
+        android:textColor="@color/black"/>
+
+</RelativeLayout>

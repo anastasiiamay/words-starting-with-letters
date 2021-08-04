@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="@drawable/custom_google_button">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userPhoto"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/com_facebook_profile_picture_blank_square"/>
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/userPhoto"
+        android:textSize="20sp"
+        android:layout_centerVertical="true"
+        android:textColor="@color/black"
+        android:text="Имя"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginTop="7dp"
+        android:layout_toStartOf="@id/chooseFriend"
+        android:drawableTint="@color/green"
+        android:drawablePadding="5dp"
+        />
+
+    <android.widget.Button
+        android:id="@+id/chooseFriend"
+        android:layout_width="105dp"
+        android:focusable="false"
+        android:padding="5dp"
+        android:layout_height="55dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:text="Выбрать"
+        android:textAllCaps="false"
+        android:textSize="18sp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:background="@drawable/custom_button"
+        android:textColor="@color/black"
+        />
+
+</RelativeLayout>

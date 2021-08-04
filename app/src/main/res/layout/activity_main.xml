@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="none"
+    android:background="@color/isabelline">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".MainActivity"
+    android:background="@color/isabelline"
+    android:padding="20dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userPhoto"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:src="@drawable/com_facebook_profile_picture_blank_square"
+        android:contentDescription="userPhoto" />
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:layout_toEndOf="@id/userPhoto"
+        android:layout_marginTop="23dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:text="Имя"
+        />
+
+    <TextView
+        android:text="Нажмите, чтобы перейти в свой профиль"
+        android:id="@+id/goToProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_toEndOf="@id/userPhoto"
+        android:textAlignment="textStart"
+        android:layout_below="@id/userName"
+        android:textSize="18sp"
+        />
+
+    <android.widget.Button
+        android:id="@+id/newGameBtn"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textAlignment="center"
+        android:layout_below="@id/userPhoto"
+        android:text="Начать новую игру"
+        android:background="@drawable/custom_google_button"
+        android:backgroundTint="@color/silver_pink"
+        android:textAllCaps="false"
+        android:paddingStart="50dp"
+        android:paddingEnd="50dp"
+        android:drawableStart="@drawable/ic_add"
+        android:drawableTint="@color/black"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/userTurnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="30dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:text="Мой ход"
+        android:layout_below="@id/newGameBtn"
+        android:layout_marginBottom="10dp"
+        />
+
+    <ru.stacymay.wordsstartingwithlettergame.FullLengthListView
+        android:id="@+id/userTurnList"
+        android:layout_below="@id/userTurnText"
+        android:dividerHeight="10dp"
+        android:divider="@color/transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/emptyUserTurnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:visibility="gone"
+        android:layout_marginTop="-15dp"
+        android:text="Тут пока нет игр. Дождитесь, когда соперник сделает свой ход или начните новую игру."
+        android:layout_below="@id/userTurnText"
+        />
+
+    <TextView
+        android:id="@+id/friendTurnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:text="Ход соперника"
+        android:layout_below="@id/userTurnList"
+        android:layout_marginBottom="10dp"
+        />
+
+    <ru.stacymay.wordsstartingwithlettergame.FullLengthListView
+        android:id="@+id/friendTurnList"
+        android:layout_below="@id/friendTurnText"
+        android:layout_width="match_parent"
+        android:dividerHeight="10dp"
+        android:divider="@color/transparent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/emptyFriendTurnText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:layout_marginTop="-15dp"
+        android:text="Тут пока нет игр. Начните новую игру и сделайте свой ход."
+        android:layout_below="@id/friendTurnText"
+        android:visibility="gone"
+
+        />
+
+    <TextView
+        android:id="@+id/endedGamesText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:text="Завершенные игры"
+        android:layout_below="@id/friendTurnList"
+        android:layout_marginBottom="10dp"
+        />
+
+    <ru.stacymay.wordsstartingwithlettergame.FullLengthListView
+        android:id="@+id/endedGamesList"
+        android:dividerHeight="10dp"
+        android:divider="@color/transparent"
+        android:layout_below="@id/endedGamesText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
+</ScrollView>

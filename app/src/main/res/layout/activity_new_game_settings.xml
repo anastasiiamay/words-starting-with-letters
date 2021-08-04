@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewGameSettingsActivity"
+    android:background="@color/isabelline"
+    android:padding="20dp">
+
+    <android.widget.Button
+        android:id="@+id/goBack"
+        android:layout_width="64dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        android:textAlignment="textStart"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:text=""
+        android:fontFamily="@font/fontawesome"
+        app:fontFamily="@font/fontawesome"
+        android:padding="0dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        />
+
+    <TextView android:id="@+id/title"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:text="Новая игра"
+        android:layout_marginTop="10dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/numOfGamersText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="30dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="Количество игроков"
+        android:layout_below="@id/title"
+        android:layout_marginBottom="20dp"
+        />
+
+    <LinearLayout
+        android:id="@+id/numLL"
+        android:layout_below="@id/numOfGamersText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="3">
+
+        <android.widget.Button
+            android:id="@+id/btn2"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textAlignment="center"
+            android:text="2"
+            android:background="@drawable/custom_google_button"
+            android:textAllCaps="false"
+            android:layout_weight="1"
+            android:layout_marginEnd="20dp"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+        <android.widget.Button
+            android:id="@+id/btn3"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textAlignment="center"
+            android:text="3"
+            android:background="@drawable/custom_google_button"
+            android:textAllCaps="false"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+        <android.widget.Button
+            android:id="@+id/btn4"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            android:textAlignment="center"
+            android:text="4"
+            android:background="@drawable/custom_google_button"
+            android:textAllCaps="false"
+            android:layout_weight="1"
+            android:layout_marginStart="20dp"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/gamersText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="20dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="Выберите своих противников"
+        android:layout_below="@id/numLL"
+        android:layout_marginBottom="20dp" />
+
+    <ListView
+        android:id="@+id/friendsList"
+        android:focusable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gamersText"
+        android:divider="@color/transparent"
+        android:dividerHeight="10dp"
+        android:layout_above="@id/startGame"/>
+
+    <android.widget.Button
+        android:id="@+id/startGame"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textAlignment="center"
+        android:text="Продолжить"
+        android:background="@drawable/custom_button"
+        android:textAllCaps="false"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored" />
+
+</RelativeLayout>

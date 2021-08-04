@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GameActivity"
+    android:background="@color/isabelline"
+    android:padding="20dp">
+
+    <TextView android:id="@+id/timeLeft"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textColor="@color/black"
+        android:layout_alignParentEnd="true"
+        android:text="Осталось 0:59"
+        android:layout_marginTop="10dp"
+        android:textSize="24sp"/>
+
+    <TextView android:id="@+id/letter"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textColor="@color/black"
+        android:text="Буква: А"
+        android:layout_marginTop="10dp"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/category1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="15dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="category1"
+        android:layout_below="@id/letter"/>
+
+    <EditText
+        android:id="@+id/et1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/category1"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_google_button"
+        android:textSize="22sp"
+        android:paddingTop="10dp"
+        android:inputType="textCapWords"
+        android:maxLength="50"
+        android:paddingBottom="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColor="@color/black"
+        android:hint="категория1"/>
+
+    <TextView
+        android:id="@+id/category2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="15dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="category2"
+        android:layout_below="@id/et1"/>
+
+    <EditText
+        android:id="@+id/et2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/category2"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_google_button"
+        android:textSize="22sp"
+        android:paddingTop="10dp"
+        android:inputType="textCapWords"
+        android:maxLength="50"
+        android:paddingBottom="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColor="@color/black"
+        android:hint="категория2"/>
+
+    <TextView
+        android:id="@+id/category3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="15dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="category3"
+        android:layout_below="@id/et2"/>
+
+    <EditText
+        android:id="@+id/et3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/category3"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_google_button"
+        android:textSize="22sp"
+        android:paddingTop="10dp"
+        android:inputType="textCapWords"
+        android:maxLength="50"
+        android:paddingBottom="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColor="@color/black"
+        android:hint="категория3"/>
+
+    <TextView
+        android:id="@+id/category4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="15dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="category4"
+        android:layout_below="@id/et3"/>
+
+    <EditText
+        android:id="@+id/et4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/category4"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_google_button"
+        android:textSize="22sp"
+        android:paddingTop="10dp"
+        android:inputType="textCapWords"
+        android:maxLength="50"
+        android:paddingBottom="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColor="@color/black"
+        android:hint="категория4"/>
+
+    <TextView
+        android:id="@+id/category5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="15dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="category5"
+        android:layout_below="@id/et4"/>
+
+    <EditText
+        android:id="@+id/et5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/category5"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/custom_google_button"
+        android:textSize="22sp"
+        android:paddingTop="10dp"
+        android:inputType="textCapWords"
+        android:maxLength="50"
+        android:paddingBottom="10dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:textColor="@color/black"
+        android:hint="категория5"/>
+
+    <android.widget.Button
+        android:id="@+id/readyBtn"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/custom_button"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="Готово!"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
+
+</RelativeLayout>

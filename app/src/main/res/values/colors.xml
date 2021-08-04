@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#F6F6F6</color>
+    <color name="bgWhite">#E6E6E6</color>
+    <color name="blue">#17255A</color>
+    <color name="green">#09BC8A</color>
+    <color name="steel">#508991</color>
+    <color name="bluelight">#18206F</color>
+    <color name="space_cadet">#22223B</color>
+    <color name="independence">#4a4e69</color>
+    <color name="helio_gray">#9a8c98</color>
+    <color name="silver_pink">#c9ada7</color>
+    <color name="isabelline">#f2e9e4</color>
+    <color name="transparent">#00000000</color>
+    <color name="golden">#FFC107</color>
+</resources>

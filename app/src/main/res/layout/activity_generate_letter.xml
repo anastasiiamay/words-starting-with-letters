@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".GenerateLetterActivity"
+    android:background="@color/isabelline"
+    android:padding="20dp">
+
+    <android.widget.Button
+        android:id="@+id/goBack"
+        android:layout_width="64dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:text=""
+        android:textAlignment="textStart"
+        android:fontFamily="@font/fontawesome"
+        app:fontFamily="@font/fontawesome"
+        android:padding="0dp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
+        />
+
+    <TextView android:id="@+id/title"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:text="Мой ход"
+        android:layout_marginTop="10dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:id="@+id/infoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="30dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="Первая буква"
+        android:layout_below="@id/title"
+        />
+
+    <TextView
+        android:id="@+id/randomLetter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_marginTop="5dp"
+        android:textSize="60sp"
+        android:textStyle="bold"
+        android:layout_centerHorizontal="true"
+        android:text="А"
+        android:layout_below="@id/infoText"
+        />
+
+
+    <android.widget.Button
+        android:layout_marginTop="10dp"
+        android:id="@+id/generateLetter"
+        android:layout_below="@id/randomLetter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_button"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="Сгенерировать букву"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:textSize="22sp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
+
+    <TextView android:id="@+id/info"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textColor="@color/black"
+        android:layout_below="@id/generateLetter"
+        android:text="Когда Вы сгенерируете случайную букву и нажмёте &quot;Начать&quot;, у Вас будет 1 минута для того, чтобы придумать и записать по 1 слову на эту букву для 5-ти случайно выбранных категорий."
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        />
+
+    <android.widget.Button
+        android:id="@+id/startGame"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_button"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:text="Начать!"
+        android:textColor="@color/black"
+        android:textAllCaps="false"
+        android:textSize="22sp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
+
+</RelativeLayout>
