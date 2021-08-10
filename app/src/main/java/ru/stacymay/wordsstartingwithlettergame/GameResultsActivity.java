@@ -14,16 +14,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GameResultsActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     FirebaseUser mUser;
-    TextView userText2;
-    ImageView userPhoto1, userPhoto2;
-    ListView user1List, user2List;
-    ArrayList<Word> wordsArrayList1 = new ArrayList<>(), wordsArrayList2 = new ArrayList<>();
+    TextView userText2, userText3;
+    ImageView userPhoto1, userPhoto2, userPhoto3;
+    FullLengthListView user1List, user2List, user3List;
+    ArrayList<Word> wordsArrayList1 = new ArrayList<>(), wordsArrayList2 = new ArrayList<>(), wordsArrayList3 = new ArrayList<>();
     ResultWordsListAdapter wordsAdapter;
     DatabaseReference myRef;
     String currUserId;
@@ -53,11 +52,14 @@ public class GameResultsActivity extends AppCompatActivity {
 
         userPhoto1 = findViewById(R.id.userPhoto);
         userPhoto2 = findViewById(R.id.userPhoto2);
+        userPhoto3 = findViewById(R.id.userPhoto3);
 
         userText2 = findViewById(R.id.userName2);
+        userText3 = findViewById(R.id.userName3);
 
         user1List = findViewById(R.id.user1List);
         user2List = findViewById(R.id.user2List);
+        user3List = findViewById(R.id.user3List);
 
         getUserWords();
         getFriendsWords();
@@ -95,13 +97,15 @@ public class GameResultsActivity extends AppCompatActivity {
                             RelativeLayout user3Layout = findViewById(R.id.userResultsRL3);
                             user3Layout.setVisibility(View.VISIBLE);
 
-                            String names[] = new String[2];
+                            ArrayList<String> names = new ArrayList<>(), photoUrls = new ArrayList<>();
+                            int i=0;
                             for (DataSnapshot childS : snapshot.child("games").child(gameId).child("players").getChildren()) {
                                 if(!childS.getKey().equals(currUserId)){
                                     String name = snapshot.child("users").child(childS.getKey()).child("name").getValue().toString();
                                     String photoUrl = snapshot.child("users").child(childS.getKey()).child("photoUrl").getValue().toString();
-                                    userText2.setText(name);
-                                    Glide.with(GameResultsActivity.this).load(photoUrl).into(userPhoto2);
+                                    names.add(name);
+                                    photoUrls.add(photoUrl);
+
                                     for(DataSnapshot childW: snapshot.child("games").child(gameId).child("players").child(childS.getKey()).child("words").getChildren()){
                                         String category = childW.getKey();
                                         String word = childW.getValue().toString();
@@ -109,10 +113,30 @@ public class GameResultsActivity extends AppCompatActivity {
                                         if(snapshot.child("words").child(category).getValue().toString().toLowerCase().contains(word.toLowerCase()+",")){
                                             correct = word.length() > 1;
                                         }
-                                        wordsArrayList2.add(new Word(category, word, correct));
+                                        if(i<5){
+                                            wordsArrayList2.add(new Word(category, word, correct));
+                                            i++;
+                                        } else {
+                                            wordsArrayList3.add(new Word(category, word, correct));
+                                        }
                                     }
                                 }
                             }
+                            if(wordsArrayList3.size()==0){
+                                userText3.setText(names.get(0));
+                                userText2.setText(names.get(1));
+                                Glide.with(GameResultsActivity.this).load(photoUrls.get(1)).into(userPhoto2);
+                                Glide.with(GameResultsActivity.this).load(photoUrls.get(0)).into(userPhoto3);
+                            } else {
+                                userText2.setText(names.get(0));
+                                userText3.setText(names.get(1));
+                                Glide.with(GameResultsActivity.this).load(photoUrls.get(0)).into(userPhoto2);
+                                Glide.with(GameResultsActivity.this).load(photoUrls.get(1)).into(userPhoto3);
+                            }
+
+                            wordsAdapter = new ResultWordsListAdapter(this, wordsArrayList3);
+                            user3List.setAdapter(wordsAdapter);
+
                             break;
                     }
                     wordsAdapter = new ResultWordsListAdapter(this, wordsArrayList2);

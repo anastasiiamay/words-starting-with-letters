@@ -13,6 +13,7 @@ import com.google.firebase.auth.*;
 import com.google.firebase.database.*;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -57,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
         userName = findViewById(R.id.userName);
         goToProfile = findViewById(R.id.goToProfile);
 
+
+
+
         goToProfile.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
@@ -65,17 +70,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
         if(mUser != null){
-            myRef.child("users").child(mUser.getUid().substring(0,12)).child("name").get().addOnCompleteListener(task -> {
+            userName.setText(mUser.getDisplayName());
+            Glide.with(this).load(mUser.getPhotoUrl()).into(userPhoto);
+            myRef.child("users").child(mUser.getUid().substring(0,12)).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
                     DataSnapshot snapshot = task.getResult();
-                    if (snapshot!=null) {
-                        String name = snapshot.getValue().toString();
-                        userName.setText(name);
+                    if (snapshot!=null && snapshot.hasChild("name")) {
+                        if(snapshot.child("name").getValue()!=null) {
+                            String name = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
+                            userName.setText(name);
+                        }
                     }
                 }
             });
-            String photoUrl = mUser.getPhotoUrl().toString();
-            Glide.with(this).load(photoUrl).into(userPhoto);
         }
 
         emptyMyTurn = findViewById(R.id.emptyUserTurnText);
@@ -104,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
                             String gameId = childS.getKey();
                             long timeStart = Long.parseLong(gameId.substring(0,13));
                             if(timeNow-timeStart<604800000)
+                            if(snapshot.child("games").hasChild(gameId))
                             if(snapshot.child("games").child(gameId).child("finished").getValue().toString().equals("true")){
                                 String organizerId = gameId.substring(13);
                                 String orgName = snapshot.child("users").child(organizerId).child("name").getValue().toString();

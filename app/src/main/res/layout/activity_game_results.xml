@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".GameResultsActivity">
+
+<ScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GameResultsActivity"
+    android:scrollbars="none"
+    android:background="@color/isabelline">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/isabelline"
     android:padding="20dp">
 
@@ -75,7 +86,7 @@
 
             </RelativeLayout>
 
-            <ListView
+            <ru.stacymay.wordsstartingwithlettergame.FullLengthListView
                 android:id="@+id/user1List"
                 android:dividerHeight="5dp"
                 android:divider="@color/transparent"
@@ -119,7 +130,7 @@
 
             </RelativeLayout>
 
-            <ListView
+            <ru.stacymay.wordsstartingwithlettergame.FullLengthListView
                 android:id="@+id/user2List"
                 android:divider="@color/transparent"
                 android:dividerHeight="5dp"
@@ -156,7 +167,7 @@
                 android:layout_height="wrap_content">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/user3Photo"
+                    android:id="@+id/userPhoto3"
                     android:layout_centerVertical="true"
                     android:layout_width="65dp"
                     android:layout_height="65dp"
@@ -165,11 +176,11 @@
                     android:contentDescription="userPhoto" />
 
                 <TextView
-                    android:id="@+id/user3Name"
+                    android:id="@+id/userName3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/black"
-                    android:layout_toRightOf="@id/user3Photo"
+                    android:layout_toRightOf="@id/userPhoto3"
                     android:textSize="20sp"
                     android:layout_centerVertical="true"
                     android:textStyle="bold"
@@ -177,7 +188,7 @@
 
             </RelativeLayout>
 
-            <ListView
+            <ru.stacymay.wordsstartingwithlettergame.FullLengthListView
                 android:id="@+id/user3List"
                 android:dividerHeight="5dp"
                 android:divider="@color/transparent"
@@ -223,7 +234,7 @@
 
             </RelativeLayout>
 
-            <ListView
+            <ru.stacymay.wordsstartingwithlettergame.FullLengthListView
                 android:id="@+id/user4List"
                 android:divider="@color/transparent"
                 android:dividerHeight="5dp"
@@ -237,6 +248,8 @@
 
     </LinearLayout>
 
+</RelativeLayout>
+</ScrollView>
     <android.widget.Button
         android:id="@+id/mainPage"
         android:layout_alignParentBottom="true"
@@ -251,6 +264,9 @@
         android:textSize="22sp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        style="@style/Widget.AppCompat.Button.Borderless.Colored"/>
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_marginEnd="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"/>
 
 </RelativeLayout>
