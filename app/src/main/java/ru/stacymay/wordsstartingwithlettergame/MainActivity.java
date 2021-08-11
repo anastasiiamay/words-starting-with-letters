@@ -1,6 +1,8 @@
 package ru.stacymay.wordsstartingwithlettergame;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.view.View;
 import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     FirebaseUser mUser;
 
+    DBFriendsHelper dbFriendsHelper;
+
     FullLengthListView userTurnList, friendTurnListV, finishedGamesListView;
     ArrayList<Game> gamesArrayList = new ArrayList<>(), friendTurnArrayList = new ArrayList<>(), finishedGamesArrayList = new ArrayList<>();
     GameInvitationListAdapter gamesAdapter;
@@ -34,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        dbFriendsHelper = new DBFriendsHelper(MainActivity.this);
 
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
@@ -58,9 +64,6 @@ public class MainActivity extends AppCompatActivity {
         userPhoto = findViewById(R.id.userPhoto);
         userName = findViewById(R.id.userName);
         goToProfile = findViewById(R.id.goToProfile);
-
-
-
 
         goToProfile.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
@@ -99,6 +102,26 @@ public class MainActivity extends AppCompatActivity {
         findFriendsGames();
         findFinishedGames();
 
+    }
+
+    private void showData() {
+        SQLiteDatabase database = dbFriendsHelper.getReadableDatabase();
+        Cursor cursor = database.query(DBFriendsHelper.TABLE_FRIENDS,null,null,null,null,null,null);
+
+        //ArrayList<WeightElement> listItem = new ArrayList<>();
+
+        while (cursor.moveToNext()){
+
+            int idid = cursor.getColumnIndex(DBFriendsHelper.KEY_ID);
+            int nameId = cursor.getColumnIndex(DBFriendsHelper.KEY_NAME);
+            int photoUrlId = cursor.getColumnIndex(DBFriendsHelper.KEY_PHOTO_URL);
+
+            //listItem.add(new WeightElement(cursor.getInt(idid),cursor.getInt(dayId), cursor.getInt(monthId),cursor.getInt(yearId),cursor.getInt(weightId)));
+        }
+        cursor.close();
+
+        //adapter = new WeightListAdapter(this,listItem);
+        //listView.setAdapter(adapter);
     }
 
     private void findFinishedGames() {
