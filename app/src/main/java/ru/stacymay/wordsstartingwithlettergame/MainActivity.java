@@ -1,10 +1,15 @@
 package ru.stacymay.wordsstartingwithlettergame;
 
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.view.View;
+import android.net.Uri;
+import android.util.Log;
 import android.widget.*;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.bumptech.glide.Glide;
@@ -28,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     FirebaseUser mUser;
 
-    DBFriendsHelper dbFriendsHelper;
+    public static final String APP_PREFERENCES = "mySettings";
+    SharedPreferences mSettings;
+    DBGamesHelper dbGamesHelper;
 
     FullLengthListView userTurnList, friendTurnListV, finishedGamesListView;
     ArrayList<Game> gamesArrayList = new ArrayList<>(), friendTurnArrayList = new ArrayList<>(), finishedGamesArrayList = new ArrayList<>();
@@ -39,54 +46,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dbFriendsHelper = new DBFriendsHelper(MainActivity.this);
-
+        // Инициализация пользователя
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mUser = mAuth.getCurrentUser();
 
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
+        // Инициализация SharedPrefs и локальной базы
+        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        dbGamesHelper = new DBGamesHelper(MainActivity.this);
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        FirebaseDatabase db = FirebaseDatabase.getInstance(getString(R.string.firebase_db_path));
-        myRef = db.getReference();
-
-        newGameBtn = findViewById(R.id.newGameBtn);
-        newGameBtn.setOnClickListener(v->{
-            Intent intent = new Intent(MainActivity.this, NewGameSettingsActivity.class);
-            startActivity(intent);
-            finish();
-        });
-
+        // Поиск виджетов
         userPhoto = findViewById(R.id.userPhoto);
         userName = findViewById(R.id.userName);
         goToProfile = findViewById(R.id.goToProfile);
 
-        goToProfile.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-            startActivity(intent);
-            finish();
-        });
-
-        if(mUser != null){
-            userName.setText(mUser.getDisplayName());
-            Glide.with(this).load(mUser.getPhotoUrl()).into(userPhoto);
-            myRef.child("users").child(mUser.getUid().substring(0,12)).get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    DataSnapshot snapshot = task.getResult();
-                    if (snapshot!=null && snapshot.hasChild("name")) {
-                        if(snapshot.child("name").getValue()!=null) {
-                            String name = Objects.requireNonNull(snapshot.child("name").getValue()).toString();
-                            userName.setText(name);
-                        }
-                    }
-                }
-            });
-        }
+        newGameBtn = findViewById(R.id.newGameBtn);
 
         emptyMyTurn = findViewById(R.id.emptyUserTurnText);
         emptyFriendTurn = findViewById(R.id.emptyFriendTurnText);
@@ -95,33 +68,101 @@ public class MainActivity extends AppCompatActivity {
         friendTurnListV = findViewById(R.id.friendTurnList);
         finishedGamesListView = findViewById(R.id.endedGamesList);
 
+        // Подключение профиля Google
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        // Подключение к базе Firebase Database
+        FirebaseDatabase db = FirebaseDatabase.getInstance(getString(R.string.firebase_db_path));
+        myRef = db.getReference();
+
+        // Кнопка "Начать новую игру"
+        newGameBtn.setOnClickListener(v->{
+            Intent intent = new Intent(MainActivity.this, NewGameSettingsActivity.class);
+            startActivity(intent);
+            finish();
+        });
+
+        // "Кнопка" "Перейти в свой профиль"
+        goToProfile.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            startActivity(intent);
+            finish();
+        });
+
+        // При изменении имени в Firebase сразу отобразить его в приложении и записать в SharedPrefs
+        myRef.child("users").child(mUser.getUid().substring(0,12)).child("name").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String name = Objects.requireNonNull(snapshot.getValue()).toString();
+                userName.setText(name);
+                SharedPreferences.Editor editor = mSettings.edit();
+                editor.putString("name", name);
+                editor.apply();
+                Toast.makeText(MainActivity.this, "Имя изменено", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("DatabaseError", error.toString());
+            }
+        });
+
+        // Загрузка фотографии профиля
+        Glide.with(this).load(mUser.getPhotoUrl()).into(userPhoto);
+
+        // Когда списки пустые, отображать другие виджеты
         userTurnList.setEmptyView(emptyMyTurn);
         friendTurnListV.setEmptyView(emptyFriendTurn);
 
-        findUserGames();
+        showOfflineGamesData();
+
         findFriendsGames();
         findFinishedGames();
+        // Обновить списки "Мой ход", "Ход соперника" и "Завершенные игры", если в Firebase новые данные
+        myRef.child("users").child(mUser.getUid().substring(0,12)).child("games").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                findUserGames();
+                Toast.makeText(MainActivity.this, "Игры изменены", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
+
+        //myRef.child("games").child()
 
     }
 
-    private void showData() {
-        SQLiteDatabase database = dbFriendsHelper.getReadableDatabase();
-        Cursor cursor = database.query(DBFriendsHelper.TABLE_FRIENDS,null,null,null,null,null,null);
+    private void showOfflineGamesData() {
+        Toast.makeText(this, "Показаны игры из локальной БД", Toast.LENGTH_SHORT).show();
+        SQLiteDatabase database = dbGamesHelper.getReadableDatabase();
+        Cursor cursor = database.query(DBGamesHelper.TABLE_GAMES,null,null,null,null,null,null);
 
-        //ArrayList<WeightElement> listItem = new ArrayList<>();
-
+        ArrayList<Game> listItem = new ArrayList<>();
+        if(cursor.getCount()>0)
         while (cursor.moveToNext()){
-
-            int idid = cursor.getColumnIndex(DBFriendsHelper.KEY_ID);
-            int nameId = cursor.getColumnIndex(DBFriendsHelper.KEY_NAME);
-            int photoUrlId = cursor.getColumnIndex(DBFriendsHelper.KEY_PHOTO_URL);
-
-            //listItem.add(new WeightElement(cursor.getInt(idid),cursor.getInt(dayId), cursor.getInt(monthId),cursor.getInt(yearId),cursor.getInt(weightId)));
+            int idid = cursor.getColumnIndex(DBGamesHelper.KEY_GAME_ID);
+            int nameId = cursor.getColumnIndex(DBGamesHelper.KEY_ORG_NAME);
+            int photoUrlId = cursor.getColumnIndex(DBGamesHelper.KEY_ORG_PHOTO_URL);
+            listItem.add(new Game(cursor.getString(idid), cursor.getString(nameId), cursor.getString(photoUrlId)));
         }
         cursor.close();
 
-        //adapter = new WeightListAdapter(this,listItem);
-        //listView.setAdapter(adapter);
+        gamesAdapter = new GameInvitationListAdapter(this, listItem, "invite");
+        userTurnList.setAdapter(gamesAdapter);
+
+// **************** WRITE DATA TO DB ******************
+//        SQLiteDatabase database = dbHelper.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put(DBHelper.KEY_WEIGHT,Integer.valueOf(tvWeight.getText().toString()));
+//        values.put(DBHelper.KEY_DAY,day);
+//        values.put(DBHelper.KEY_MONTH,month);
+//        values.put(DBHelper.KEY_YEAR,year);
+//        database.insert(DBHelper.TABLE_WEIGHT, null, values);
     }
 
     private void findFinishedGames() {
@@ -151,6 +192,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void findUserGames() {
+        Toast.makeText(this, "Показаны игры из Firebase, записываются в локальную БД", Toast.LENGTH_SHORT).show();
+        SQLiteDatabase database = dbGamesHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
         myRef.child("users").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DataSnapshot snapshot = task.getResult();
@@ -162,6 +206,11 @@ public class MainActivity extends AppCompatActivity {
                                 String orgName = snapshot.child(organizerId).child("name").getValue().toString();
                                 String orgPhoto =snapshot.child(organizerId).child("photoUrl").getValue().toString();
                                 gamesArrayList.add(new Game(childS.getKey(), orgName, orgPhoto));
+
+                                values.put(DBGamesHelper.KEY_GAME_ID,childS.getKey());
+                                values.put(DBGamesHelper.KEY_ORG_NAME,orgName);
+                                values.put(DBGamesHelper.KEY_ORG_PHOTO_URL,orgPhoto);
+                                database.insert(DBGamesHelper.TABLE_GAMES, null, values);
                             }
                         }
                         gamesAdapter = new GameInvitationListAdapter(this, gamesArrayList, "invite");
@@ -191,7 +240,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                         gamesAdapter = new GameInvitationListAdapter(this, friendTurnArrayList, "waitFriend");
                         friendTurnListV.setAdapter(gamesAdapter);
-
                 }
             }
         });
