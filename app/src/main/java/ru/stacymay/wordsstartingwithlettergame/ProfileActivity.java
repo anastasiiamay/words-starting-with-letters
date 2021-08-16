@@ -101,7 +101,6 @@ public class ProfileActivity extends AppCompatActivity {
             Intent intent = new Intent(ProfileActivity.this, ChangeNameActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-            finish();
         });
 
         if(mUser != null){
@@ -163,13 +162,13 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
-        finish();
-    }
+//    @Override
+//    public void onBackPressed() {
+//        Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+//        startActivity(intent);
+//        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+//        finish();
+//    }
 
 
 

@@ -58,14 +58,4 @@ public class ChangeNameActivity extends AppCompatActivity {
         });
 
     }
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(ChangeNameActivity.this, ProfileActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
-        finish();
-    }
-
-
 }

@@ -56,7 +56,6 @@ public class GameInvitationListAdapter extends ArrayAdapter<Game> {
                     intent.putExtra("gameId", game.getId());
                     ((Activity) context).startActivity(intent);
                     ((Activity) context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                    ((Activity) context).finish();
                 });
                 builder.create();
                 builder.show();
@@ -68,7 +67,6 @@ public class GameInvitationListAdapter extends ArrayAdapter<Game> {
                 intent.putExtra("gameId", game.getId());
                 ((Activity) context).startActivity(intent);
                 ((Activity) context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                ((Activity) context).finish();
             });
         } else {
             name.setText("Игра завершена!\nНажмите, чтобы посмотреть результаты");
@@ -77,7 +75,6 @@ public class GameInvitationListAdapter extends ArrayAdapter<Game> {
                 intent.putExtra("gameId", game.getId());
                 ((Activity) context).startActivity(intent);
                 ((Activity) context).overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                ((Activity) context).finish();
             });
         }
 

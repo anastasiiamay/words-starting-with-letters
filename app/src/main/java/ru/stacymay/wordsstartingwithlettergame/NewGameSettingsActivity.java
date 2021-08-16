@@ -91,7 +91,7 @@ public class NewGameSettingsActivity extends AppCompatActivity {
                 intent.putStringArrayListExtra("players", chosenPlayers);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-                finish();
+                //finish();
             }
         });
 
@@ -114,12 +114,5 @@ public class NewGameSettingsActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(NewGameSettingsActivity.this, MainActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
-        finish();
-    }
 
 }

@@ -11,17 +11,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WordsStartingWithLetterGame">
-        <activity android:name=".GameResultsActivity" />
+        <activity android:name=".GameResultsActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".GameActivity" />
-        <activity android:name=".GenerateLetterActivity" />
+        <activity android:name=".GenerateLetterActivity"
+            android:parentActivityName=".NewGameSettingsActivity"/>
         <activity
             android:name=".ChangeNameActivity"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".ProfileActivity"/>
         <activity
             android:name=".AddFriendActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".NewGameSettingsActivity" />
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".NewGameSettingsActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".ProfileActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity android:name=".StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -14,11 +14,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class GenerateLetterActivity extends AppCompatActivity {
 
     TextView randomLetter;
-    String[] letters = new String[]{"А","Б","В","Г","Д","Е","Ж","З","И","К","Л","М","Н","О","П","Р","С","Т","У","Ф","Х","Ц","Ч","Ш","Щ","Э","Ю","Я"};
+    String[] letters = new String[]{"А","Б","В","Г","Д","Е","Ж","З","И","К","Л","М","Н","О","П","Р","С","Т","У","Ф","Х","Ц","Ч","Ш","Э","Ю","Я"};
     Button generateLetter, startGameBtn;
     Button goBackBtn;
     private final Handler handler = new Handler();
@@ -95,17 +96,10 @@ public class GenerateLetterActivity extends AppCompatActivity {
             } else {
                 i=0;
             }
-            randomLetter.setText(letters[i]);
+            int randomNum = ThreadLocalRandom.current().nextInt(0,letters.length);
+            randomLetter.setText(letters[randomNum]);
             handler.postDelayed(this, 30);
         }
     };
-
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(GenerateLetterActivity.this, NewGameSettingsActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
-        finish();
-    }
 
 }

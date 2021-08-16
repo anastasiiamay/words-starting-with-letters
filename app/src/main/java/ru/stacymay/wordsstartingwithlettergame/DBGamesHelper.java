@@ -15,6 +15,7 @@ public class DBGamesHelper extends SQLiteOpenHelper {
     public static final String KEY_GAME_ID = "gameId";
     public static final String KEY_ORG_NAME = "orgName";
     public static final String KEY_ORG_PHOTO_URL = "orgPhotoUrl";
+    public static final String KEY_PLAYED = "played";
 
     public DBGamesHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -25,7 +26,8 @@ public class DBGamesHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + TABLE_GAMES + "(" + KEY_ID +" integer primary key AUTOINCREMENT,"
                 + KEY_GAME_ID + " text,"
                 + KEY_ORG_NAME + " text,"
-                + KEY_ORG_PHOTO_URL + " text"
+                + KEY_ORG_PHOTO_URL + " text,"
+                + KEY_PLAYED + " text"
                 +")");
     }
 

@@ -41,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Game> gamesArrayList = new ArrayList<>(), friendTurnArrayList = new ArrayList<>(), finishedGamesArrayList = new ArrayList<>();
     GameInvitationListAdapter gamesAdapter;
 
+    ValueEventListener gamesListener, finalGamesListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         newGameBtn.setOnClickListener(v->{
             Intent intent = new Intent(MainActivity.this, NewGameSettingsActivity.class);
             startActivity(intent);
-            finish();
+            //finish();
         });
 
         // "Кнопка" "Перейти в свой профиль"
@@ -89,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
             overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             startActivity(intent);
-            finish();
         });
 
         // При изменении имени в Firebase сразу отобразить его в приложении и записать в SharedPrefs
@@ -101,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = mSettings.edit();
                 editor.putString("name", name);
                 editor.apply();
-                Toast.makeText(MainActivity.this, "Имя изменено", Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -117,55 +117,64 @@ public class MainActivity extends AppCompatActivity {
         userTurnList.setEmptyView(emptyMyTurn);
         friendTurnListV.setEmptyView(emptyFriendTurn);
 
-        showOfflineGamesData();
-
-        findFriendsGames();
-        findFinishedGames();
         // Обновить списки "Мой ход", "Ход соперника" и "Завершенные игры", если в Firebase новые данные
-        myRef.child("users").child(mUser.getUid().substring(0,12)).child("games").addValueEventListener(new ValueEventListener() {
+        gamesListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 findUserGames();
-                Toast.makeText(MainActivity.this, "Игры изменены", Toast.LENGTH_SHORT).show();
+                findFriendsGames();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
-        });
+        };
 
-        //myRef.child("games").child()
+        finalGamesListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                findFinishedGames();
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        };
+
+        myRef.child("users").child(mUser.getUid().substring(0,12)).child("games").addValueEventListener(gamesListener);
+        myRef.child("games").addValueEventListener(finalGamesListener);
     }
 
-    private void showOfflineGamesData() {
-        Toast.makeText(this, "Показаны игры из локальной БД", Toast.LENGTH_SHORT).show();
-        SQLiteDatabase database = dbGamesHelper.getReadableDatabase();
-        Cursor cursor = database.query(DBGamesHelper.TABLE_GAMES,null,null,null,null,null,null);
-
-        ArrayList<Game> listItem = new ArrayList<>();
-        if(cursor.getCount()>0)
-        while (cursor.moveToNext()){
-            int idid = cursor.getColumnIndex(DBGamesHelper.KEY_GAME_ID);
-            int nameId = cursor.getColumnIndex(DBGamesHelper.KEY_ORG_NAME);
-            int photoUrlId = cursor.getColumnIndex(DBGamesHelper.KEY_ORG_PHOTO_URL);
-            listItem.add(new Game(cursor.getString(idid), cursor.getString(nameId), cursor.getString(photoUrlId)));
-        }
-        cursor.close();
-
-        gamesAdapter = new GameInvitationListAdapter(this, listItem, "invite");
-        userTurnList.setAdapter(gamesAdapter);
-
-// **************** WRITE DATA TO DB ******************
-//        SQLiteDatabase database = dbHelper.getWritableDatabase();
-//        ContentValues values = new ContentValues();
-//        values.put(DBHelper.KEY_WEIGHT,Integer.valueOf(tvWeight.getText().toString()));
-//        values.put(DBHelper.KEY_DAY,day);
-//        values.put(DBHelper.KEY_MONTH,month);
-//        values.put(DBHelper.KEY_YEAR,year);
-//        database.insert(DBHelper.TABLE_WEIGHT, null, values);
-    }
+//    private void showOfflineGamesData() {
+//        Toast.makeText(this, "Показаны игры из локальной БД", Toast.LENGTH_SHORT).show();
+//        SQLiteDatabase database = dbGamesHelper.getReadableDatabase();
+//        Cursor cursor = database.query(DBGamesHelper.TABLE_GAMES,null,null,null,null,null,null);
+//
+//        ArrayList<Game> listItem = new ArrayList<>();
+//        if(cursor.getCount()>0)
+//        while (cursor.moveToNext()){
+//            int playedId = cursor.getColumnIndex(DBGamesHelper.KEY_PLAYED);
+//            int idid = cursor.getColumnIndex(DBGamesHelper.KEY_GAME_ID);
+//            int nameId = cursor.getColumnIndex(DBGamesHelper.KEY_ORG_NAME);
+//            int photoUrlId = cursor.getColumnIndex(DBGamesHelper.KEY_ORG_PHOTO_URL);
+//            if(cursor.getString(playedId).equals("false"))
+//            listItem.add(new Game(cursor.getString(idid), cursor.getString(nameId), cursor.getString(photoUrlId)));
+//        }
+//        cursor.close();
+//
+//        gamesAdapter = new GameInvitationListAdapter(this, listItem, "invite");
+//        userTurnList.setAdapter(gamesAdapter);
+//
+//// **************** WRITE DATA TO DB ******************
+////        SQLiteDatabase database = dbHelper.getWritableDatabase();
+////        ContentValues values = new ContentValues();
+////        values.put(DBHelper.KEY_WEIGHT,Integer.valueOf(tvWeight.getText().toString()));
+////        values.put(DBHelper.KEY_DAY,day);
+////        values.put(DBHelper.KEY_MONTH,month);
+////        values.put(DBHelper.KEY_YEAR,year);
+////        database.insert(DBHelper.TABLE_WEIGHT, null, values);
+//    }
 
     private void findFinishedGames() {
+        finishedGamesArrayList.clear();
         long timeNow = System.currentTimeMillis();
         myRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -192,9 +201,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void findUserGames() {
-        Toast.makeText(this, "Показаны игры из Firebase, записываются в локальную БД", Toast.LENGTH_SHORT).show();
-        SQLiteDatabase database = dbGamesHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
+        gamesArrayList.clear();
         myRef.child("users").get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DataSnapshot snapshot = task.getResult();
@@ -206,11 +213,6 @@ public class MainActivity extends AppCompatActivity {
                                 String orgName = snapshot.child(organizerId).child("name").getValue().toString();
                                 String orgPhoto =snapshot.child(organizerId).child("photoUrl").getValue().toString();
                                 gamesArrayList.add(new Game(childS.getKey(), orgName, orgPhoto));
-
-                                values.put(DBGamesHelper.KEY_GAME_ID,childS.getKey());
-                                values.put(DBGamesHelper.KEY_ORG_NAME,orgName);
-                                values.put(DBGamesHelper.KEY_ORG_PHOTO_URL,orgPhoto);
-                                database.insert(DBGamesHelper.TABLE_GAMES, null, values);
                             }
                         }
                         gamesAdapter = new GameInvitationListAdapter(this, gamesArrayList, "invite");
@@ -222,6 +224,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void findFriendsGames(){
+        friendTurnArrayList.clear();
         myRef.get().addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 DataSnapshot snapshot = task.getResult();
@@ -261,4 +264,14 @@ public class MainActivity extends AppCompatActivity {
         isOnline(true);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(myRef!=null) {
+            if (gamesListener != null)
+                myRef.child("users").child(mUser.getUid().substring(0, 12)).child("games").removeEventListener(gamesListener);
+            if (finalGamesListener != null)
+                myRef.child("games").addValueEventListener(finalGamesListener);
+        }
+    }
 }
